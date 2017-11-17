@@ -35,7 +35,7 @@
         </tr>
     </thead>
     {% if not i.is_today %}
-    {% for i in app %}
+    {% for i in today %}
     <tbody>
         <tr>
             <td>{{i.task}}</td>
@@ -58,7 +58,7 @@
         </tr>
     </thead>
     <tbody>
-         {% for i in app %}
+         {% for i in later %}
         <tr>
             <td>{{i.task}}</td>
             <td>{{i.date}}</td>
