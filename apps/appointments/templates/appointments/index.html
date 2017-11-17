@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>What's Up</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#datepicker").datepicker({ dateFormat: 'yy-mm-dd', minDate: 0,  });
+            $("#datepicker").datepicker("setDate", new Date());
+        });
+
+        $(function () {
+                $('#table').tablesorter({ sortList: [[0, 0], [1, 0]] });
+            });
+        
+    </script>
+</head>
+<body>
+    <a href="/logout">Logout</a>
+    <h1>Hello, {{request.session.user_name}}!</h1>
+    <h3>Here are your appointments for today, {% now "jS F Y" %}:</h3>
+    <table id="table" class="tablesorter">
+    <thead>
+        <tr>
+            <th>Tasks</th>
+            <th>Time (sorted)</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    {% if not i.is_today %}
+    {% for i in app %}
+    <tbody>
+        <tr>
+            <td>{{i.task}}</td>
+            <td>{{i.time}}</td>
+            <td>{{i.status}}</td>
+            <td><a href="/appointments/{{i.id}}">Edit</a> | <a href="/appointments/destroy/{{i.id}}">Delete</a></td>
+        </tr>
+    </tbody>
+    {% endfor %}
+    {% endif %}
+    </table>
+    <br><br><hr>
+    <h3>Your other appointments:</h3>
+    <table id="table" class="tablesorter">
+    <thead>
+        <tr>
+            <th>Tasks</th>
+            <th>Date</th>
+            <th>Time (sorted)</th>
+        </tr>
+    </thead>
+    <tbody>
+         {% for i in app %}
+        <tr>
+            <td>{{i.task}}</td>
+            <td>{{i.date}}</td>
+            <td>{{i.time}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+    <br><br><hr>
+    <h3>Add Appointment</h3>
+    <form action="/appointments/add" method="POST">{% csrf_token %}
+        <p>Date: <input type="text" name="date" id="datepicker" value=""></p>
+        <p>Time: 
+            <select name="time">
+                <option value="08:00">8:00AM</option>
+                <option value="12:00">12:00PM</option>
+                <option value="15:00">3:00PM</option>
+                <option value="17:00">5:00PM</option>
+            </select></p>
+        <p>Tasks: <input type="text" name="task"></p>
+        <input type="submit" value="Add">
+    </form><br>
+    {% for message in messages %}
+    <li class="red">{{ message }}</li>
+    <br> {% endfor %}
+</body>
+</html>

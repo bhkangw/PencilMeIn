@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Update Appointment</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#datepicker").datepicker({ dateFormat: 'yy-mm-dd', minDate: 0 });
+        });
+
+    </script>
+</head>
+<body>
+    <a href="/appointments">Dashboard</a> | <a href="/logout">Logout</a>
+    <br><br><br>
+    <form action="/appointments/update/{{app.id}}" method="POST"> {% csrf_token %}
+        <p>Tasks: <input type="text" name="task" value="{{app.task}}"></p>
+        <p>Status: <select name="status" value="status">
+            <option value="Done">Done</option>
+            <option value="Pending">Pending</option>
+            <option value="Missed">Missed</option>
+        </select></p>
+        <p>Date:
+            <input type="text" name="date" id="datepicker" value="{{app.date}}">
+        </p>
+        <p>Time:
+            <select name="time" value="{{app.date}}">
+                <option value="08:00">8:00AM</option>
+                <option value="12:00">12:00PM</option>
+                <option value="15:00">3:00PM</option>
+                <option value="17:00">5:00PM</option>
+            </select>
+        </p>
+        <input type="submit" value="Update">
+    </form><br>
+    {% for message in messages %}
+    <li class="red">{{ message }}</li>
+    <br> {% endfor %}
+</body>
+</html>
