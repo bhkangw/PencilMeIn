@@ -13,8 +13,8 @@ def index(request):
     user = User.objects.get(id=request.session['user_id'])
     context = {
         # 'app': Appointment.objects.order_by('time').filter(user=user),
-        'today': Appointment.objects.filter(date=today, user=user),
-        'later': Appointment.objects.filter(user=user).exclude(date=today)
+        'today': Appointment.objects.order_by('time').filter(date=today, user=user),
+        'later': Appointment.objects.order_by('time').filter(user=user).exclude(date=today)
     }
     return render(request, 'appointments/index.html', context, today)
 
